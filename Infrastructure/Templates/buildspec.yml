@@ -11,7 +11,7 @@ phases:
       - echo Checking for build type
       - echo "Server build, adding ECS Task Role to the task definition file"
       - sed -i "3i\"taskRoleArn\": \"arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ECS_TASK_ROLE>\"," ./Infrastructure/Templates/taskdef.json
-      - echo "Replacing table name in the server function"    
+      - echo "Replacing table name in the server function"
   build:
     commands:
       - echo Build started on `date`
@@ -38,6 +38,8 @@ phases:
       - sed -i "s|<REPO_URL>|$REPO_URL|g" taskdef.json
       - sed -i "s|<AWS_ACCOUNT_ID>|$AWS_ACCOUNT_ID|g" taskdef.json
       - sed -i "s|<AWS_REGION>|$AWS_REGION|g" taskdef.json
+      - cat taskdef.json
+      - cat appspec.yaml
 
 artifacts:
   files:
