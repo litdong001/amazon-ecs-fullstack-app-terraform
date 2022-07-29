@@ -21,4 +21,3 @@ COPY flasky.py config.py boot.sh ./
 EXPOSE 5000
 #ENTRYPOINT ["./boot.sh"]
 #ENTRYPOINT ["./venv/bin/flask run"]
-
