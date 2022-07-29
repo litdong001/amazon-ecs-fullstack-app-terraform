@@ -29,6 +29,7 @@ ENV FLASK_CONFIG default
 
 # Expose apache.
 EXPOSE 5000
+EXPOSE 80
 
 # Copy these repo into place.
 ADD backend /var/www/backend
