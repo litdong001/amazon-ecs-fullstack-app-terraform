@@ -42,5 +42,3 @@ artifacts:
     - '**/*'
   base-directory: 'Infrastructure/Templates/Artifacts'
   discard-paths: yes
-  name:buildservice
-
