@@ -8,19 +8,6 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
-      - echo Checking for build type
-      - |
-        if expr "${FOLDER_PATH}" : ".*client*" ; then
-          echo "Client build, embedding frontend layer file with ALB backend DNS"
-          sed -i "s|<SERVER_ALB_URL>|$SERVER_ALB_URL|g" ./Code/client/src/services/RestServices.js
-        else
-          echo "Server build, adding ECS Task Role to the task definition file"
-          sed -i "3i\"taskRoleArn\": \"arn:aws:iam::<AWS_ACCOUNT_ID>:role/<ECS_TASK_ROLE>\"," ./Infrastructure/Templates/taskdef.json
-          echo "Replacing table name in the server function"
-          sed -i "s|DYNAMODB_TABLE|$DYNAMODB_TABLE|g" ./Code/server/src/app.js
-          echo "Adding Swagger host"
-          sed -i "s|<SERVER_ALB_URL>|$SERVER_ALB_URL|g" ./Code/server/src/swagger/swagger.js
-        fi
   build:
     commands:
       - echo Build started on `date`
@@ -55,4 +42,5 @@ artifacts:
     - '**/*'
   base-directory: 'Infrastructure/Templates/Artifacts'
   discard-paths: yes
+  name:buildservice
 
