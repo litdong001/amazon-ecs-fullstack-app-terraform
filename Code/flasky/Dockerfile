@@ -7,7 +7,15 @@ RUN apt-get update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-g
 
 # Enable apache mods.
 RUN a2enmod wsgi
-RUN pip install Flask
+#RUN pip install Flask
+
+COPY requirements requirements
+COPY app app
+COPY migrations migrations
+COPY flasky.py config.py boot.sh ./
+RUN pip install -r requirements/dev.txt
+RUN pip install gunicorn
+
 
 # Manually set up the apache environment variables
 ENV APACHE_RUN_USER www-data
@@ -15,9 +23,15 @@ ENV APACHE_RUN_GROUP www-data
 ENV APACHE_LOG_DIR /var/log/apache2
 ENV APACHE_LOCK_DIR /var/lock/apache2
 ENV APACHE_PID_FILE /var/run/apache2.pid
+ENV FLASK_APP flasky.py
+ENV FLASK_CONFIG default
+
+RUN adduser -D flasky
+USER flasky
+
 
 # Expose apache.
-EXPOSE 80
+EXPOSE 5000
 
 # Copy these repo into place.
 ADD backend /var/www/backend
@@ -26,4 +40,5 @@ ADD backend /var/www/backend
 ADD apache-config.conf /etc/apache2/sites-enabled/000-default.conf
 
 # By default start up apache in the foreground, override with /bin/bash for interative.
-CMD /usr/sbin/apache2ctl -D FOREGROUND
+#CMD /usr/sbin/apache2ctl -D FOREGROUND
+CMD ./boot.sh -D FOREGROUND
