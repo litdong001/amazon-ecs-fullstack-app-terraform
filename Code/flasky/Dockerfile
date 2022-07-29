@@ -26,9 +26,6 @@ ENV APACHE_PID_FILE /var/run/apache2.pid
 ENV FLASK_APP flasky.py
 ENV FLASK_CONFIG default
 
-RUN adduser -D flasky
-USER flasky
-
 
 # Expose apache.
 EXPOSE 5000
