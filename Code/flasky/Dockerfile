@@ -28,7 +28,7 @@ ENV FLASK_CONFIG default
 
 
 # Expose apache.
-EXPOSE 5000
+#EXPOSE 5000
 EXPOSE 80
 
 # Copy these repo into place.
@@ -38,7 +38,7 @@ ADD backend /var/www/backend
 ADD apache-config.conf /etc/apache2/sites-enabled/000-default.conf
 
 # By default start up apache in the foreground, override with /bin/bash for interative.
-#CMD /usr/sbin/apache2ctl -D FOREGROUND
-RUN chmod +x ./boot.sh
-RUN which flask
-CMD flask run
+CMD /usr/sbin/apache2ctl -D FOREGROUND
+#RUN chmod +x ./boot.sh
+#RUN which flask
+#CMD flask run
